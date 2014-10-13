@@ -3,7 +3,7 @@
         [overtone.inst.sampled-piano]
         [overtone.inst.drum]
         [overtone.inst.synth]
-        [mad-sounds.inst.synths]
+        ;;[mad-sounds.inst.synths]
         ))
 
 ;; ======================================================================
@@ -94,27 +94,18 @@
 (defn left-hand
   "temporal recursion pattern"
   [beat ps ds]
-  (let [inst fmsynth
-        dur (first ds)];)) ;; uncomment to stop
-
+  (let [dur (first ds)];)) ;; uncomment to stop
     ;; add this 3rd
-    (when (= 0 (mod beat 8))
-      (reset! root (rand-nth (remove #(= @root %) [:e2 :d2 :c2]))))
+    ;; (when (= 0 (mod beat 8))
+    ;;   (reset! root (rand-nth (remove #(= @root %) [:e2 :d2 :c2]))))
 
-    (play beat inst (note (first ps)) 0.5 dur)
+    (play beat sampled-piano (note (first ps)) 0.5 dur)
+
     ;; add this 2nd
-
-    (play (+ 0.5 beat) inst (note @root) 0.45 dur)
+    (play (+ 0.5 beat) sampled-piano (note @root) 0.45 dur)
 
     (apply-by (metro (+ beat dur))
               #'left-hand [(+ beat dur) (rotate 1 ps) (rotate 1 ds)])))
-
-;;(left-hand (metro) [:g3 :g3 :a3 :b3] [1])
-;;(left-hand (metro) [:g3 :g3 :a3 :b3] [1 0.5 1.5 1])
-;;(stop)
-
-;; ======================================================================
-;; right hand
 
 (defn quantize
   "given a sorted seq in s, find the item in the seq closest to n.  n
